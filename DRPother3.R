@@ -155,23 +155,47 @@ plotrealx <-function(x){
 
 
 #DOES NOT WORK
-#inversecdf<-function(x){
-#	a<-0
-#	if(x<=0.0075){
-#		newx = x-0
-#		a <-quadform(mat[1,3], mat[1,2]-mat[1,1]*mat[1,3], -newx)
-#		}
-#	else{
-#	 	a<-0
-#	} 
-#	return(a)
-#}
+inversecdf<-function(x){
+	a<-0
+	if(x<=0.0075){
+		newx = x-0
+		a <-invcdfcalc(mat[1,3], mat[1,2], mat[1,1], mat[1,4],x)
+		}
+	else{
+	 	a<-0
+	} 
+	return(a)
+}
 
-#inversecdf(.006)
+inversecdf(.006)
 #points(.03162278, .006, col = 'purple')
 
+#points(x0, 4.8*x0 +.06, col = 'green')
+
+invcdfcalc <-function(a, b, c, d, x1){
+	(quadform(a/2, (b-c*a), (-x1+(a/2)*(d^2)+(b-c*a)*d)))
+}
 
 
+invcdfcalc(mat[2,3], mat[2,2], mat[2,1], mat[2,4], .5)
 
+#quadform(2.4, .54-.1*4.8, -.491)
+#quadform(mat[2,3]/2, mat[2,2]-mat[2,1]*mat[2,3], -.5 + mat[2,3]/2*(mat[2,4]^2) + 
+(mat[2,2]-mat[2,1]*mat[2,3])*mat[2,4])
+
+invcdf<-function(x){
+	a<-0
+	ifelse(x<=0.0075, a<-invcdfcalc(mat[1,3], mat[1,2], mat[1,1], mat[1,4], x-mat[1,7]), 
+	ifelse(x<=0.0625, a<-invcdfcalc(mat[2,3], mat[2,2], mat[2,1], mat[2,4], x-mat[2,7]),
+	ifelse(x<=0.1575, a<-invcdfcalc(mat[3,3], mat[3,2], mat[3,1], mat[3,4], x-mat[3,7]),
+	ifelse(x<=.2835, a<-invcdfcalc(mat[4,3], mat[4,2], mat[4,1], mat[4,4], x-mat[4,7]),
+	ifelse(x<=.4275, a<-invcdfcalc(mat[5,3], mat[5,2], mat[5,1], mat[5,4], x-mat[5,7]),
+	ifelse(x<=.5775, a<-invcdfcalc(mat[6,3], mat[6,2], mat[6,1], mat[6,4], x-mat[6,7]),
+	ifelse(x<=.7215, a<-invcdfcalc(mat[7,3], mat[7,2], mat[7,1], mat[7,4], x-mat[7,7]),
+	ifelse(x<=.8475, a<-invcdfcalc(mat[8,3], mat[8,2], mat[8,1], mat[8,4], x-mat[8,7]),
+	ifelse(x<=.9435, a<-invcdfcalc(mat[9,3], mat[9,2], mat[9,1], mat[9,4], x-mat[9,7]),
+	ifelse(x<=.9975, a<-invcdfcalc(mat[10,3], mat[10,2], mat[10,1], mat[10,4], x-mat[10,7]),
+	 a<-invcdfcalc(mat[11,3], mat[11,2], mat[11,1], mat[11,4], x-mat[11,7]) ))))))))))
+}
 
 
