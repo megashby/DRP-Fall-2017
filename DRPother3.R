@@ -114,17 +114,12 @@ cdf <-function(x){
 #plot.new()
 #plot(1, type="n", xlab="", ylab="", xlim=c(0, 1), ylim=c(0, 1), main = 'CDF of Envelope')
 
-#points (x0, cdf(x0))
-
-#points(x0, 6*x0+0, col = 'green')
-#points(x0, 4.8*x0+.54 -.1*4.8, col = 'purple')
-#points(x0, 3.6*x0 +.96 -.2*3.6, col = 'yellow')
 
 quadform<-function(a,b,c){
 value1 <-(-b + sqrt(b*b -4*(a*c))) / (2*a)
 value2 <-(-b - sqrt(b*b -4*(a*c))) / (2*a)
-#return (c(value1, value2))
-return(value1)
+return (c(value1, value2))
+#return(value1)
 }
 
 plotrealx <-function(x){
@@ -141,17 +136,12 @@ plotrealx <-function(x){
 	ifelse(x<=.85, a<-quadform(mat[9,3], (mat[9,2]- mat[9,1]*mat[9,3]), -x),
 	ifelse(x<=.95, a<-quadform(mat[10,3], (mat[10,2]- mat[10,1]*mat[10,3]), -x),
 	a<- quadform(mat[11,3], (mat[11,2]- mat[11,1]*mat[11,3]), -x)))))))))))
-	return(a)
-	
+	return(a)	
 }
+
 #points(plotrealx(.04), envelope(plotrealx(.04)), col = 'blue')
 #points(plotrealx(.34), envelope(plotrealx(.34)), col = 'blue')
 
-#keep<-c()
-#for (n in 1:100){
-#	currentu <-runif(1,0,1)
-#	currentx <-runif(1, 0, 1)
-#}
 
 
 #DOES NOT WORK
@@ -173,29 +163,35 @@ inversecdf(.006)
 #points(x0, 4.8*x0 +.06, col = 'green')
 
 invcdfcalc <-function(a, b, c, d, x1){
-	(quadform(a/2, (b-c*a), (-x1+(a/2)*(d^2)+(b-c*a)*d)))
+	(quadform(a/2, (b-c*a), (-x1+(a/2)*(d^2) +(b-c*a)*d)))
 }
 
-
-invcdfcalc(mat[2,3], mat[2,2], mat[2,1], mat[2,4], .5)
+invcdfcalc2 <-function(a, b, c, d, x1){
+	(quadform(a/2, (b-c*a), -x1-((a/2)*(d^2) + b*d - c*a*d)))
+}
 
 #quadform(2.4, .54-.1*4.8, -.491)
 #quadform(mat[2,3]/2, mat[2,2]-mat[2,1]*mat[2,3], -.5 + mat[2,3]/2*(mat[2,4]^2) + 
 (mat[2,2]-mat[2,1]*mat[2,3])*mat[2,4])
 
+#still doesn't work for xs between .4275 and .5775, probably due to it being a horizontal line
 invcdf<-function(x){
 	a<-0
-	ifelse(x<=0.0075, a<-invcdfcalc(mat[1,3], mat[1,2], mat[1,1], mat[1,4], x-mat[1,7]), 
-	ifelse(x<=0.0625, a<-invcdfcalc(mat[2,3], mat[2,2], mat[2,1], mat[2,4], x-mat[2,7]),
-	ifelse(x<=0.1575, a<-invcdfcalc(mat[3,3], mat[3,2], mat[3,1], mat[3,4], x-mat[3,7]),
-	ifelse(x<=.2835, a<-invcdfcalc(mat[4,3], mat[4,2], mat[4,1], mat[4,4], x-mat[4,7]),
-	ifelse(x<=.4275, a<-invcdfcalc(mat[5,3], mat[5,2], mat[5,1], mat[5,4], x-mat[5,7]),
-	ifelse(x<=.5775, a<-invcdfcalc(mat[6,3], mat[6,2], mat[6,1], mat[6,4], x-mat[6,7]),
-	ifelse(x<=.7215, a<-invcdfcalc(mat[7,3], mat[7,2], mat[7,1], mat[7,4], x-mat[7,7]),
-	ifelse(x<=.8475, a<-invcdfcalc(mat[8,3], mat[8,2], mat[8,1], mat[8,4], x-mat[8,7]),
-	ifelse(x<=.9435, a<-invcdfcalc(mat[9,3], mat[9,2], mat[9,1], mat[9,4], x-mat[9,7]),
-	ifelse(x<=.9975, a<-invcdfcalc(mat[10,3], mat[10,2], mat[10,1], mat[10,4], x-mat[10,7]),
-	 a<-invcdfcalc(mat[11,3], mat[11,2], mat[11,1], mat[11,4], x-mat[11,7]) ))))))))))
+	ifelse(x<=0.0075, a<-invcdfcalc2(mat[1,3], mat[1,2], mat[1,1], mat[1,4], x-mat[1,7]), 
+	ifelse(x<=0.0615, a<-invcdfcalc2(mat[2,3], mat[2,2], mat[2,1], mat[2,4], x-mat[2,7]),
+	ifelse(x<=0.1575, a<-invcdfcalc2(mat[3,3], mat[3,2], mat[3,1], mat[3,4], x-mat[3,7]),
+	ifelse(x<=.2835, a<-invcdfcalc2(mat[4,3], mat[4,2], mat[4,1], mat[4,4], x-mat[4,7]),
+	ifelse(x<=.4275, a<-invcdfcalc2(mat[5,3], mat[5,2], mat[5,1], mat[5,4], x-mat[5,7]),
+	ifelse(x<=.5775, a<-invcdfcalc2(mat[6,3], mat[6,2], mat[6,1], mat[6,4], x-mat[6,7]),
+	ifelse(x<=.7215, a<-invcdfcalc2(mat[7,3], mat[7,2], mat[7,1], mat[7,4], x-mat[7,7]),
+	ifelse(x<=.8475, a<-invcdfcalc2(mat[8,3], mat[8,2], mat[8,1], mat[8,4], x-mat[8,7]),
+	ifelse(x<=.9435, a<-invcdfcalc2(mat[9,3], mat[9,2], mat[9,1], mat[9,4], x-mat[9,7]),
+	ifelse(x<=.9975, a<-invcdfcalc2(mat[10,3], mat[10,2], mat[10,1], mat[10,4], x-mat[10,7]),
+	 a<-invcdfcalc2(mat[11,3], mat[11,2], mat[11,1], mat[11,4], x-mat[11,7]) ))))))))))
 }
 
+points(x0, 3.6*x0 + .96 -.2*3.6, col = 'green')
+invcdf(.1)
+
+quadform(3.6/2, .96-.2*3.6, -(3.6/2*(.15)^2 +.96*.15) -.2*3.6*(.15)-.0385)
 
