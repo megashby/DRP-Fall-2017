@@ -162,19 +162,23 @@ inversecdf(.006)
 
 #points(x0, 4.8*x0 +.06, col = 'green')
 
-invcdfcalc <-function(a, b, c, d, x1){
-	(quadform(a/2, (b-c*a), (-x1+(a/2)*(d^2) +(b-c*a)*d)))
-}
+#invcdfcalc <-function(a, b, c, d, x1){
+#	(quadform(a/2, (b-c*a), (-x1+(a/2)*(d^2) +(b-c*a)*d)))
+#}
 
 invcdfcalc2 <-function(a, b, c, d, x1){
 	(quadform(a/2, (b-c*a), -x1-((a/2)*(d^2) + b*d - c*a*d)))
 }
 
+specialcase<-function(newx){
+	return ((newx + 1.5*.45)/1.5)
+}
+
 #quadform(2.4, .54-.1*4.8, -.491)
 #quadform(mat[2,3]/2, mat[2,2]-mat[2,1]*mat[2,3], -.5 + mat[2,3]/2*(mat[2,4]^2) + 
-(mat[2,2]-mat[2,1]*mat[2,3])*mat[2,4])
+#(mat[2,2]-mat[2,1]*mat[2,3])*mat[2,4])
 
-#still doesn't work for xs between .4275 and .5775, probably due to it being a horizontal line
+
 invcdf<-function(x){
 	a<-0
 	ifelse(x<=0.0075, a<-invcdfcalc2(mat[1,3], mat[1,2], mat[1,1], mat[1,4], x-mat[1,7]), 
@@ -182,7 +186,7 @@ invcdf<-function(x){
 	ifelse(x<=0.1575, a<-invcdfcalc2(mat[3,3], mat[3,2], mat[3,1], mat[3,4], x-mat[3,7]),
 	ifelse(x<=.2835, a<-invcdfcalc2(mat[4,3], mat[4,2], mat[4,1], mat[4,4], x-mat[4,7]),
 	ifelse(x<=.4275, a<-invcdfcalc2(mat[5,3], mat[5,2], mat[5,1], mat[5,4], x-mat[5,7]),
-	ifelse(x<=.5775, a<-invcdfcalc2(mat[6,3], mat[6,2], mat[6,1], mat[6,4], x-mat[6,7]),
+	ifelse(x<=.5775, a<-specialcase(x-mat[6,7]),
 	ifelse(x<=.7215, a<-invcdfcalc2(mat[7,3], mat[7,2], mat[7,1], mat[7,4], x-mat[7,7]),
 	ifelse(x<=.8475, a<-invcdfcalc2(mat[8,3], mat[8,2], mat[8,1], mat[8,4], x-mat[8,7]),
 	ifelse(x<=.9435, a<-invcdfcalc2(mat[9,3], mat[9,2], mat[9,1], mat[9,4], x-mat[9,7]),
